@@ -6,18 +6,12 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
-
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "users")
-public class User {
+@AllArgsConstructor
+@Document(collection = "likes")
+public class Like {
 
-    @Id
-    private String id;
-    private String name;
-    private String login;
-    private String password;
-    private Date dateCreation;
+    private String noteId;
+    private String authorId;
 }

@@ -16,7 +16,7 @@ import java.util.Objects;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     @PostMapping("/userAdd")
     public ResponseEntity<User> userAdd(@RequestBody User user){

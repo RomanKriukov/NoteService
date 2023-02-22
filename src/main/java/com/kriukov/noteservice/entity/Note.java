@@ -9,15 +9,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "users")
-public class User {
+@AllArgsConstructor
+@Document(collection = "notes")
+public class Note {
 
     @Id
     private String id;
-    private String name;
-    private String login;
-    private String password;
+    private String content;
+    private String authorId;
     private Date dateCreation;
+    private Date lastUpdateDate;
+    private int likes;
 }
