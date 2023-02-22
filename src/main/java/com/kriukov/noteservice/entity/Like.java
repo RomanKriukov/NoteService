@@ -12,6 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "likes")
 public class Like {
 
+    @Id
+    String id;
     private String noteId;
     private String authorId;
 }

@@ -1,7 +1,9 @@
 package com.kriukov.noteservice.controller;
 
 import com.kriukov.noteservice.dto.NoteDto;
+import com.kriukov.noteservice.entity.Like;
 import com.kriukov.noteservice.entity.Note;
+import com.kriukov.noteservice.service.LikeService;
 import com.kriukov.noteservice.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,8 @@ public class NoteController {
 
     @Autowired
     NoteService noteService;
+    @Autowired
+    LikeService likeService;
 
     @PostMapping("/createNote")
     public ResponseEntity<Note> createNote(@RequestBody Note note){
@@ -56,5 +60,14 @@ public class NoteController {
             ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/likeDislike")
+    public NoteDto likeDislike(@RequestBody Like like){
+        NoteDto noteDto = likeService.likeDislike(like);
+        if(Objects.isNull(noteDto)){
+            ResponseEntity.badRequest().build();
+        }
+        return noteDto;
     }
 }

@@ -21,11 +21,19 @@ public class LikeService {
     @Autowired
     NoteService noteService;
 
-    //public NoteDto likeDislike(String authorId, String noteId){
-    //    if(Objects.isNull(userService.findById(authorId)) || Objects.isNull(noteService.getNoteById(noteId))){
-    //        logger.logMessage("The user or note does not exist!");
-    //        return null;
-    //    }
-    //    Like like = likeRepository.
-    //}
+    public NoteDto likeDislike(Like like){
+        if(Objects.isNull(userService.findById(like.getAuthorId()))
+                || Objects.isNull(noteService.getNoteById(like.getNoteId()))){
+            logger.logMessage("The user or note does not exist!");
+            return null;
+        }
+        //like.setId();
+        Like isExistLike = likeRepository.save(like);
+        if(isExistLike.equals(like)){
+            likeRepository.delete(like);
+            return noteService.getNoteById(like.getNoteId());
+        }
+        likeRepository.insert(like);
+        return noteService.getNoteById(like.getNoteId());
+    }
 }
