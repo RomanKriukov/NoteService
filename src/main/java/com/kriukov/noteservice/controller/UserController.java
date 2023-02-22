@@ -4,10 +4,7 @@ import com.kriukov.noteservice.entity.User;
 import com.kriukov.noteservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -28,8 +25,35 @@ public class UserController {
         }
     }
 
-    @GetMapping("/findAllUsers")
-    public List<User> getUsers(){
-        return userService.getAllUsers();
+    @GetMapping("/getUserById/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable String userId){
+        User user = userService.findById(userId);
+        if(Objects.isNull(user)){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/getAllUsers")
+    public ResponseEntity<List<User>> getUsers(){
+        List<User> userList = userService.getAllUsers();
+        if(Objects.isNull(userList)){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(userList);
+    }
+
+    @PutMapping("/updateUser")
+    public ResponseEntity<User> updateUser(@RequestBody User putUser){
+        User user = userService.updateUser(putUser);
+        if(Objects.isNull(user)){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(user);
+    }
+
+    @DeleteMapping("/deleteUser/{userId}")
+    public String deleteUser(@PathVariable String userId){
+        return userService.deleteUser(userId);
     }
 }

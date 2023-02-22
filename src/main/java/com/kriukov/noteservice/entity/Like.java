@@ -16,4 +16,10 @@ public class Like {
     String id;
     private String noteId;
     private String authorId;
+
+    public Like(String noteId, String authorId){
+        this.id = noteId + authorId;
+        this.noteId = noteId;
+        this.authorId = authorId;
+    }
 }

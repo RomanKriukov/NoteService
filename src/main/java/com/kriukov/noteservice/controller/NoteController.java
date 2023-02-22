@@ -1,6 +1,5 @@
 package com.kriukov.noteservice.controller;
 
-import com.kriukov.noteservice.dto.NoteDto;
 import com.kriukov.noteservice.entity.Like;
 import com.kriukov.noteservice.entity.Note;
 import com.kriukov.noteservice.service.LikeService;
@@ -25,21 +24,21 @@ public class NoteController {
         return ResponseEntity.ok(noteService.createNote(note));
     }
 
-    @GetMapping("/getNote/{noteId}")
-    public ResponseEntity<NoteDto> getNoteById(@PathVariable String noteId){
-        NoteDto noteDto = noteService.getNoteById(noteId);
+    @GetMapping("/getNoteById/{noteId}")
+    public ResponseEntity<Note> getNoteById(@PathVariable String noteId){
+        Note note = noteService.getNoteById(noteId);
 
-        if(Objects.isNull(noteDto)){
+        if(Objects.isNull(note)){
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(noteDto);
+        return ResponseEntity.ok(note);
     }
 
     @GetMapping("/getAllNotes")
     public ResponseEntity<List<Note>> getAllNotes(){
         List<Note> noteList = noteService.getAllNotes();
-        if(noteList.isEmpty()){
-            ResponseEntity.badRequest().build();
+        if(Objects.isNull(noteList)){
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(noteList);
     }
@@ -63,11 +62,11 @@ public class NoteController {
     }
 
     @PostMapping("/likeDislike")
-    public NoteDto likeDislike(@RequestBody Like like){
-        NoteDto noteDto = likeService.likeDislike(like);
-        if(Objects.isNull(noteDto)){
-            ResponseEntity.badRequest().build();
+    public ResponseEntity<Note> likeDislike(@RequestBody Like like){
+        Note note = likeService.likeDislike(like);
+        if(Objects.isNull(note)){
+            return ResponseEntity.badRequest().build();
         }
-        return noteDto;
+        return ResponseEntity.ok(note);
     }
 }

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LikeRepository extends MongoRepository<Like, String> {
+    int countByNoteId(String noteId);
 }

@@ -1,6 +1,5 @@
 package com.kriukov.noteservice.service;
 
-import com.kriukov.noteservice.dto.NoteDto;
 import com.kriukov.noteservice.entity.Note;
 import com.kriukov.noteservice.logger.Logger;
 import com.kriukov.noteservice.repository.NoteRepository;
@@ -23,29 +22,21 @@ public class NoteService {
     private Optional<Note> noteOptional;
 
     public Note createNote(Note note){
-        note.setDateCreation(new Date());
-        if(Objects.isNull(note.getAuthorId()) || Objects.isNull(userService.findById(note.getAuthorId()))){
+        if(Objects.isNull(note.getAuthorId())
+                || Objects.isNull(userService.findById(note.getAuthorId()))){
             note.setAuthorId(null);
-        }else {
-            note.setAuthorId(userService.findById(note.getAuthorId()).getId());
         }
+        note.setDateCreation(new Date());
         return noteRepository.insert(note);
     }
 
-    public NoteDto getNoteById(String noteId){
+    public Note getNoteById(String noteId){
         noteOptional = noteRepository.findById(noteId);
         if(noteOptional.isEmpty()){
             logger.logMessage("Note with such id = " + noteId + " does not exist!");
             return null;
         }
-        Note note = noteOptional.get();
-        NoteDto noteDto = new NoteDto()
-                .setId(note.getId())
-                .setContent(note.getContent())
-                .setAuthor((Objects.isNull(note.getAuthorId()) ? "anonymous" : userService.findById(note.getAuthorId()).getName()))
-                .setDateCreation(note.getDateCreation())
-                .setLikes(note.getLikes());
-        return noteDto;
+        return noteOptional.get();
     }
 
     public List<Note> getAllNotes(){
@@ -71,8 +62,7 @@ public class NoteService {
     public String deleteNote(String noteId){
         noteOptional = noteRepository.findById(noteId);
         if(noteOptional.isEmpty()){
-            logger.logMessage("Note with such id = " + noteId + " does not exist!");
-            return null;
+            return "Note with such id = " + noteId + " does not exist!";
         }
         noteRepository.deleteById(noteId);
         return "The note was successfully deleted!";
