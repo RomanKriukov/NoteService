@@ -1,0 +1,10 @@
+FROM openjdk:11-jre-slim
+
+# Переключення на робочу папку /app
+WORKDIR /app
+
+# Копіювання JAR-файлу в контейнер
+COPY target/NoteService-0.0.1-SNAPSHOT.jar app.jar
+
+# Команда для запуску Spring Boot додатка
+CMD ["java", "-jar", "app.jar"]
